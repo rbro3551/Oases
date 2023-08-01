@@ -23,7 +23,7 @@ struct ContentView: View {
                     Label("Explore", systemImage: "map")
                 }
             
-            ProfileView() 
+            ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle")
                 }
