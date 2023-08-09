@@ -19,13 +19,16 @@ struct AddView: View {
                 Form {
                     Section {
                         ZStack {
-                            Rectangle()
-                                .fill(.secondary)
-
-                            
-                            Text("Tap to select a picture")
-                                .foregroundColor(.white)
-                                .font(.headline)
+                            if viewModel.image == nil {
+                                Rectangle()
+                                    .fill(.ultraThinMaterial)
+                                    .clipShape(RoundedRectangle(cornerRadius: 25.0))
+                                
+                                
+                                Text("Tap to select a picture")
+                                    .foregroundColor(.secondary)
+                                    .font(.headline)
+                            }
                             
                             viewModel.image?
                                 .resizable()

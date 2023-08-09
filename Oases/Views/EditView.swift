@@ -17,15 +17,7 @@ struct EditView: View {
 
         Form {
             Section {
-                ZStack {
-                    Rectangle()
-                        .fill(.secondary)
-
-                    
-                    Text("Tap to select a picture")
-                        .foregroundColor(.white)
-                        .font(.headline)
-                    
+                ZStack {                    
                     viewModel.image
                         .resizable()
                         .scaledToFit()
