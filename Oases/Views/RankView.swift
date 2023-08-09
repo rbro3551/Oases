@@ -1,5 +1,5 @@
 //
-//  ProgressView.swift
+//  RankView.swift
 //  Oases
 //
 //  Created by Riley Brookins on 7/5/23.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ProgressView: View {
+struct RankView: View {
     let progress: Double
     let color: Color
     
@@ -34,8 +34,8 @@ struct ProgressView: View {
     }
 }
 
-struct ProgressView_Previews: PreviewProvider {
+struct RankView_Previews: PreviewProvider {
     static var previews: some View {
-        ProgressView(progress: 0.25, color: Color.pink)
+        RankView(progress: 0.25, color: Color.pink)
     }
 }

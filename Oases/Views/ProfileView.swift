@@ -16,7 +16,7 @@ struct ProfileView: View {
         NavigationView {
             VStack {
                 ZStack {
-                    ProgressView(progress: viewModel.determineProgress(reviews: fountains.reviews()), color: viewModel.determineColor(reviews: fountains.reviews()))
+                    RankView(progress: viewModel.determineProgress(reviews: fountains.reviews()), color: viewModel.determineColor(reviews: fountains.reviews()))
                         .frame(width: 300, height: 300)
                         .navigationTitle("Reviewer Rank")
                     

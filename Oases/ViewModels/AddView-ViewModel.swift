@@ -22,6 +22,7 @@ extension AddView {
         @Published var image: Image?
         @Published var inputImage: UIImage?
         @Published var showingImagePicker = false
+        @Published var isLoading: Bool = false
         
         
         // initial fountain name, rating, and description
@@ -34,6 +35,8 @@ extension AddView {
         
         // saves the newly added fountain
         func saveFountain() async -> Fountain {
+            
+            isLoading = true
             var newFountain = fountain
             newFountain.id = UUID()
             newFountain.name = name
@@ -41,6 +44,7 @@ extension AddView {
             newFountain.description = description
             newFountain.image = inputImage?.jpegData(compressionQuality: 0.2) ?? Data()
             newFountain.city = await cityManager(latitude: fountain.latitude, longitude: fountain.longitude)
+            isLoading = false
             
             
             return newFountain

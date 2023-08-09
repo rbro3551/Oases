@@ -15,70 +15,80 @@ struct AddView: View {
     
     var body: some View {
         NavigationView {
-            Form {
-                Section {
-                    ZStack {
-                        Rectangle()
-                            .fill(.secondary)
+            ZStack {
+                Form {
+                    Section {
+                        ZStack {
+                            Rectangle()
+                                .fill(.secondary)
 
-                        
-                        Text("Tap to select a picture")
-                            .foregroundColor(.white)
-                            .font(.headline)
-                        
-                        viewModel.image?
-                            .resizable()
-                            .scaledToFit()
-                    }
-                    .frame(height: 300)
-                    .onTapGesture {
-                        viewModel.showingImagePicker = true
-                    }
-
-
-                }
-                Section {
-                    TextField("Fountain name", text: $viewModel.name)
-                } header: {
-                    Text("Fountain Name")
-                }
-                
-                Section {
-                    RatingView(rating: $viewModel.rating)
-                    TextEditor(text: $viewModel.description)
-                        .foregroundColor(viewModel.description == "Review" ? .gray : .primary)
-                        .onTapGesture {
-                            if viewModel.description == "Review" {
-                                viewModel.description = ""
-                            }
+                            
+                            Text("Tap to select a picture")
+                                .foregroundColor(.white)
+                                .font(.headline)
+                            
+                            viewModel.image?
+                                .resizable()
+                                .scaledToFit()
                         }
-                        .frame(height: 100)
-                } header: {
-                    Text("Leave a review")
-                }
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button("Cancel") {
-                        onDismiss?(true)
-                        dismiss()
+                        .frame(height: 300)
+                        .onTapGesture {
+                            viewModel.showingImagePicker = true
+                        }
+
+
+                    }
+                    Section {
+                        TextField("Fountain name", text: $viewModel.name)
+                    } header: {
+                        Text("Fountain Name")
+                    }
+                    
+                    Section {
+                        RatingView(rating: $viewModel.rating)
+                        TextEditor(text: $viewModel.description)
+                            .foregroundColor(viewModel.description == "Review" ? .gray : .primary)
+                            .onTapGesture {
+                                if viewModel.description == "Review" {
+                                    viewModel.description = ""
+                                }
+                            }
+                            .frame(height: 100)
+                    } header: {
+                        Text("Leave a review")
                     }
                 }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Save") {
-                        Task {
-                            await onSave(viewModel.saveFountain())
+                .opacity(viewModel.isLoading ? 0.5 : 1.0)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("Cancel") {
+                            onDismiss?(true)
                             dismiss()
                         }
                     }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("Save") {
+                            Task {
+                                await onSave(viewModel.saveFountain())
+                                dismiss()
+                            }
+                        }
+                    }
+                }
+                .navigationTitle("Add a fountain")
+                .sheet(isPresented: $viewModel.showingImagePicker) {
+                    ImagePicker(image: $viewModel.inputImage)
+                }
+                .onChange(of: viewModel.inputImage) { _ in viewModel.loadImage() }
+                
+            .interactiveDismissDisabled()
+                
+                if viewModel.isLoading {
+                    LoadingView()
+                        .offset(y: -55)
                 }
             }
-            .navigationTitle("Add a fountain")
-            .sheet(isPresented: $viewModel.showingImagePicker) {
-                ImagePicker(image: $viewModel.inputImage)
-            }
-            .onChange(of: viewModel.inputImage) { _ in viewModel.loadImage() }
-            .interactiveDismissDisabled()
+            .allowsHitTesting(viewModel.isLoading ? false : true)
         }
     }
     
